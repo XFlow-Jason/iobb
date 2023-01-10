@@ -23,7 +23,7 @@ extern "C" {
 #endif
 
 /* ----------------------------------------------------------------------- */
-#include "BBBiolib_PWMSS.h"
+// #include "BBBiolib_PWMSS.h"
 #include "BBBiolib_McSPI.h"
 #include "BBBiolib_ADCTSC.h"
 #include "i2cfunc.h"
