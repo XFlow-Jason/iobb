@@ -233,7 +233,7 @@ int BBBIO_PWMSS_Status(unsigned int PWMID)
  * 	set pluse rgument of epwm module
  *
  *      @param PWMID    : EPWMSS number , 0~2
- *      @param HZ    	: pluse HZ
+ *      @param fHZ    	: pluse fHZ
  *      @param dutyA    : Duty Cycle in ePWM A
  *      @param dutyB    : Duty Cycle in ePWM B
  *
@@ -262,7 +262,7 @@ int BBBIO_PWMSS_Status(unsigned int PWMID)
  * 		so , Divisor must  Nearest Cyclens/655350
 */
 
-int BBBIO_PWMSS_Setting(unsigned int PWMID , float HZ ,float dutyA ,float dutyB)
+int BBBIO_PWMSS_Setting(unsigned int PWMID , float fHZ ,float dutyA ,float dutyB)
 {
 	int param_error = 1;
 	volatile unsigned short* reg16 ;
@@ -270,7 +270,7 @@ int BBBIO_PWMSS_Setting(unsigned int PWMID , float HZ ,float dutyA ,float dutyB)
             param_error = 0;
         if (PWMID > 2)              // if input is not EPWMSS 0~ WPEMSS 2
             param_error = 0;
-	if (HZ < 0 )
+	if (fHZ < 0 )
 	    param_error = 0;
 	if(dutyA < 0.0f || dutyA > 100.0f || dutyB < 0.0f || dutyB > 100.0f)
 	    param_error = 0;
@@ -295,7 +295,7 @@ int BBBIO_PWMSS_Setting(unsigned int PWMID , float HZ ,float dutyA ,float dutyB)
 	int NearHSPCLKDIV =7;
 	int NearTBPRD =0;
 
-	Cyclens = 1000000000.0f / HZ ; /* 10^9 / HZ , comput time per cycle (ns) */
+	Cyclens = 1000000000.0f / fHZ ; /* 10^9 / fHZ , comput time per cycle (ns) */
 
 
 	Divisor =  (Cyclens / 655350.0f) ;	/* am335x provide (128*14) divider , and per TBPRD means 10 ns when divider /1 ,
@@ -307,7 +307,7 @@ int BBBIO_PWMSS_Setting(unsigned int PWMID , float HZ ,float dutyA ,float dutyB)
 
 	if(Divisor > (128 * 14)) {
 #ifdef BBBIO_LIB_DBG
-		printf("BBBIO_PWMSS_Setting : Can't generate %f HZ \n", HZ);
+		printf("BBBIO_PWMSS_Setting : Can't generate %f fHZ \n", fHZ);
 #endif
 		return 0;
 	}
