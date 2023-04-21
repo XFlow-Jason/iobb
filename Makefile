@@ -48,22 +48,22 @@ install :
 #---------------------------------------------------
 
 test-outputs: test-io/test-outputs.c libiobb.a
-	cc -o test-outputs test-io/test-outputs.c -I. -L. -liobb
+	gcc -o test-outputs test-io/test-outputs.c -I. -L. -liobb
 
 pb-test-outputs: test-io/pb-test-outputs.c libiobb.a
-	cc -o pb-test-outputs test-io/pb-test-outputs.c -I. -L. -liobb
+	gcc -o pb-test-outputs test-io/pb-test-outputs.c -I. -L. -liobb
 
 test-inputs: test-io/test-inputs.c libiobb.a
-	cc -o test-inputs test-io/test-inputs.c -I. -L. -liobb
+	gcc -o test-inputs test-io/test-inputs.c -I. -L. -liobb
 
 pb-test-inputs: test-io/pb-test-inputs.c libiobb.a
-	cc -o pb-test-inputs test-io/pb-test-inputs.c -I. -L. -liobb
+	gcc -o pb-test-inputs test-io/pb-test-inputs.c -I. -L. -liobb
 
 LED : ${DEMO_PATH}Demo_LED/LED.c libiobb.a
-	cc -o LED ${DEMO_PATH}Demo_LED/LED.c -L ${LIB_PATH} -liobb
+	gcc -o LED ${DEMO_PATH}Demo_LED/LED.c -L ${LIB_PATH} -liobb
 
 lcd3-test: ${DEMO_PATH}Demo_I2C/lcd3-test.c libiobb.a
-	cc -o lcd3-test ${DEMO_PATH}Demo_I2C/lcd3-test.c -I. -L ${LIB_PATH} -liobb
+	gcc -o lcd3-test ${DEMO_PATH}Demo_I2C/lcd3-test.c -I. -L ${LIB_PATH} -liobb
 
 ADT7301 : ${DEMO_PATH}Demo_ADT7301/ADT7301.c libiobb.a
 	gcc -o ADT7301 ${DEMO_PATH}Demo_ADT7301/ADT7301.c -L ${LIB_PATH} -liobb
