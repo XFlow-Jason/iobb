@@ -9,18 +9,18 @@ LIBRARIES = iobb
 
 all : libiobb.a LED ADT7301 SEVEN_SCAN SMOTOR LED_GPIO DEBOUNCING 4x4keypad ADC ADC_VOICE GPIO_STATUS EP_STATUS ADC_CALC lcd3-test test-outputs pb-test-outputs test-inputs pb-test-inputs
 
-libiobb.a : ${LIB_PATH}BBBiolib.c ${LIB_PATH}BBBiolib.h BBBiolib_PWMSS.o BBBiolib_McSPI.o BBBiolib_ADCTSC.o i2cfunc.o
+libiobb.a : ${LIB_PATH}BBBiolib.c ${LIB_PATH}BBBiolib.h BBBiolib_McSPI.o BBBiolib_ADCTSC.o i2cfunc.o
 	gcc -c ${LIB_PATH}BBBiolib.c -o ${LIB_PATH}BBBiolib.o
-	ar -rs ${LIB_PATH}libiobb.a ${LIB_PATH}BBBiolib.o ${LIB_PATH}BBBiolib_PWMSS.o ${LIB_PATH}BBBiolib_McSPI.o ${LIB_PATH}BBBiolib_ADCTSC.o ${LIB_PATH}i2cfunc.o
+	ar -rs ${LIB_PATH}libiobb.a ${LIB_PATH}BBBiolib.o ${LIB_PATH}BBBiolib_McSPI.o ${LIB_PATH}BBBiolib_ADCTSC.o ${LIB_PATH}i2cfunc.o
 	cp ${LIB_PATH}libiobb.a ./
 	cp ${LIB_PATH}BBBiolib.h ./iobb.h
 	cp ${LIB_PATH}BBBiolib_ADCTSC.h ./
 	cp ${LIB_PATH}BBBiolib_McSPI.h ./
-	cp ${LIB_PATH}BBBiolib_PWMSS.h ./
+# 	cp ${LIB_PATH}BBBiolib_PWMSS.h ./
 	cp ${LIB_PATH}i2cfunc.h ./
 
-BBBiolib_PWMSS.o : ${LIB_PATH}BBBiolib_PWMSS.c ${LIB_PATH}BBBiolib_PWMSS.h
-	gcc -c ${LIB_PATH}BBBiolib_PWMSS.c -o ${LIB_PATH}BBBiolib_PWMSS.o -W 
+# BBBiolib_PWMSS.o : ${LIB_PATH}BBBiolib_PWMSS.c ${LIB_PATH}BBBiolib_PWMSS.h
+# 	gcc -c ${LIB_PATH}BBBiolib_PWMSS.c -o ${LIB_PATH}BBBiolib_PWMSS.o -W 
 
 BBBiolib_McSPI.o : ${LIB_PATH}BBBiolib_McSPI.c ${LIB_PATH}BBBiolib_PWMSS.h
 	gcc -c ${LIB_PATH}BBBiolib_McSPI.c -o ${LIB_PATH}BBBiolib_McSPI.o -W
@@ -37,7 +37,7 @@ install :
 	cp ${LIB_PATH}BBBiolib.h /usr/local/include/iobb.h
 	cp ${LIB_PATH}BBBiolib_ADCTSC.h /usr/local/include
 	cp ${LIB_PATH}BBBiolib_McSPI.h /usr/local/include
-	cp ${LIB_PATH}BBBiolib_PWMSS.h /usr/local/include
+# 	cp ${LIB_PATH}BBBiolib_PWMSS.h /usr/local/include
 	cp ${LIB_PATH}i2cfunc.h /usr/local/include
 	ln -s /usr/local/include/iobb.h /usr/local/include/BBBiolib.h
 
@@ -91,8 +91,8 @@ DEBOUNCING : ${DEMO_PATH}Demo_Debouncing/Debouncing.c libiobb.a
 4x4keypad : ${DEMO_PATH}Demo_4x4keypad/4x4keypad.c libiobb.a
 	gcc -o 4x4keypad ${DEMO_PATH}Demo_4x4keypad/4x4keypad.c -L ${LIB_PATH} -liobb
 
-PWM : ${DEMO_PATH}Demo_PWM/PWM.c libiobb.a
-	gcc -o PWM ${DEMO_PATH}Demo_PWM/PWM.c -L ${LIB_PATH} -liobb
+# PWM : ${DEMO_PATH}Demo_PWM/PWM.c libiobb.a
+# 	gcc -o PWM ${DEMO_PATH}Demo_PWM/PWM.c -L ${LIB_PATH} -liobb
 
 ADC : ${DEMO_PATH}Demo_ADC/ADC.c libiobb.a
 	gcc -o ADC ${DEMO_PATH}Demo_ADC/ADC.c -L ${LIB_PATH} -liobb -lm
