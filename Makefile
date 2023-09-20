@@ -32,14 +32,14 @@ i2cfunc.o : ${LIB_PATH}i2cfunc.c ${LIB_PATH}i2cfunc.h
 	gcc -c ${LIB_PATH}i2cfunc.c -o ${LIB_PATH}i2cfunc.o
 
 install :  
-	rm -f /usr/arm-linux-gnueabihf/include/BBBiolib.h
-	cp ${LIB_PATH}libiobb.a /usr/arm-linux-gnueabihf/lib/
-	cp ${LIB_PATH}BBBiolib.h /usr/arm-linux-gnueabihf/include/iobb.h
-	cp ${LIB_PATH}BBBiolib_ADCTSC.h /usr/arm-linux-gnueabihf/include
-	cp ${LIB_PATH}BBBiolib_McSPI.h /usr/arm-linux-gnueabihf/include
-	cp ${LIB_PATH}BBBiolib_PWMSS.h /usr/arm-linux-gnueabihf/include
-	cp ${LIB_PATH}i2cfunc.h /usr/arm-linux-gnueabihf/include
-	ln -s /usr/arm-linux-gnueabihf/include/iobb.h /usr/arm-linux-gnueabihf/include/BBBiolib.h
+	rm -f /usr/local/include/BBBiolib.h
+	cp ${LIB_PATH}libiobb.a /usr/local/lib/
+	cp ${LIB_PATH}BBBiolib.h /usr/local/include/iobb.h
+	cp ${LIB_PATH}BBBiolib_ADCTSC.h /usr/local/include
+	cp ${LIB_PATH}BBBiolib_McSPI.h /usr/local/include
+	cp ${LIB_PATH}BBBiolib_PWMSS.h /usr/local/include
+	cp ${LIB_PATH}i2cfunc.h /usr/local/include
+	ln -s /usr/local/include/iobb.h /usr/local/include/BBBiolib.h
 
 	
 
