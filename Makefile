@@ -31,15 +31,21 @@ BBBiolib_ADCTSC.o : ${LIB_PATH}BBBiolib_ADCTSC.c ${LIB_PATH}BBBiolib_ADCTSC.h
 i2cfunc.o : ${LIB_PATH}i2cfunc.c ${LIB_PATH}i2cfunc.h
 	arm-linux-gnueabihf-gcc -c ${LIB_PATH}i2cfunc.c -o ${LIB_PATH}i2cfunc.o
 
+ifndef COMPILE_PATH
+    COMPILE_PATH := "/usr/arm-linux-gnueabihf"
+endif
+
+
 install :  
-	rm -f /usr/arm-linux-gnueabihf/include/BBBiolib.h
-	cp ${LIB_PATH}libiobb.a /usr/arm-linux-gnueabihf/lib/
-	cp ${LIB_PATH}BBBiolib.h /usr/arm-linux-gnueabihf/include/iobb.h
-	cp ${LIB_PATH}BBBiolib_ADCTSC.h /usr/arm-linux-gnueabihf/include
-	cp ${LIB_PATH}BBBiolib_McSPI.h /usr/arm-linux-gnueabihf/include
-	cp ${LIB_PATH}BBBiolib_PWMSS.h /usr/arm-linux-gnueabihf/include
-	cp ${LIB_PATH}i2cfunc.h /usr/arm-linux-gnueabihf/include
-	ln -s /usr/arm-linux-gnueabihf/include/iobb.h /usr/arm-linux-gnueabihf/include/BBBiolib.h
+	echo "${COMPILE_PATH}"
+	rm -f ${COMPILE_PATH}/include/BBBiolib.h
+	cp ${LIB_PATH}libiobb.a ${COMPILE_PATH}/lib/
+	cp ${LIB_PATH}BBBiolib.h ${COMPILE_PATH}/include/iobb.h
+	cp ${LIB_PATH}BBBiolib_ADCTSC.h ${COMPILE_PATH}/include
+	cp ${LIB_PATH}BBBiolib_McSPI.h ${COMPILE_PATH}/include
+	cp ${LIB_PATH}BBBiolib_PWMSS.h ${COMPILE_PATH}/include
+	cp ${LIB_PATH}i2cfunc.h ${COMPILE_PATH}/include
+	ln -s ${COMPILE_PATH}/include/iobb.h ${COMPILE_PATH}/include/BBBiolib.h
 
 	
 
