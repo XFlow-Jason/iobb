@@ -22,16 +22,16 @@ libiobb.a : ${LIB_PATH}BBBiolib.c ${LIB_PATH}BBBiolib.h BBBiolib_PWMSS.o BBBioli
 	cp ${LIB_PATH}i2cfunc.h ./
 
 BBBiolib_PWMSS.o : ${LIB_PATH}BBBiolib_PWMSS.c ${LIB_PATH}BBBiolib_PWMSS.h
-    $(CC) $(CFLAGS) -c ${LIB_PATH}BBBiolib_PWMSS.c -o ${LIB_PATH}BBBiolib_PWMSS.o -W 
+	$(CC) $(CFLAGS) -c ${LIB_PATH}BBBiolib_PWMSS.c -o ${LIB_PATH}BBBiolib_PWMSS.o -W 
 
 BBBiolib_McSPI.o : ${LIB_PATH}BBBiolib_McSPI.c ${LIB_PATH}BBBiolib_PWMSS.h
-    $(CC) $(CFLAGS) -c ${LIB_PATH}BBBiolib_McSPI.c -o ${LIB_PATH}BBBiolib_McSPI.o -W
+	$(CC) $(CFLAGS) -c ${LIB_PATH}BBBiolib_McSPI.c -o ${LIB_PATH}BBBiolib_McSPI.o -W
 
 BBBiolib_ADCTSC.o : ${LIB_PATH}BBBiolib_ADCTSC.c ${LIB_PATH}BBBiolib_ADCTSC.h
-    $(CC) $(CFLAGS) -c ${LIB_PATH}BBBiolib_ADCTSC.c -o ${LIB_PATH}BBBiolib_ADCTSC.o -W
+	$(CC) $(CFLAGS) -c ${LIB_PATH}BBBiolib_ADCTSC.c -o ${LIB_PATH}BBBiolib_ADCTSC.o -W
 
 i2cfunc.o : ${LIB_PATH}i2cfunc.c ${LIB_PATH}i2cfunc.h
-    $(CC) $(CFLAGS) -c ${LIB_PATH}i2cfunc.c -o ${LIB_PATH}i2cfunc.o
+	$(CC) $(CFLAGS) -c ${LIB_PATH}i2cfunc.c -o ${LIB_PATH}i2cfunc.o
 
 ifndef COMPILE_PATH
     COMPILE_PATH := "/usr/arm-linux-gnueabihf"
