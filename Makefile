@@ -1,5 +1,6 @@
 CC ?= arm-linux-gnueabihf-gcc
 CFLAGS ?=
+AR ?= arm-linux-gnueabihf-ar
 
 LIB_PATH = ./BBBio_lib/
 DEMO_PATH = ./Demo/
@@ -13,7 +14,7 @@ LIBRARIES = iobb
 
 libiobb.a : ${LIB_PATH}BBBiolib.c ${LIB_PATH}BBBiolib.h BBBiolib_PWMSS.o BBBiolib_McSPI.o BBBiolib_ADCTSC.o i2cfunc.o
 	$(CC) $(CFLAGS) -c ${LIB_PATH}BBBiolib.c -o ${LIB_PATH}BBBiolib.o
-	ar -rs ${LIB_PATH}libiobb.a ${LIB_PATH}BBBiolib.o ${LIB_PATH}BBBiolib_PWMSS.o ${LIB_PATH}BBBiolib_McSPI.o ${LIB_PATH}BBBiolib_ADCTSC.o ${LIB_PATH}i2cfunc.o
+	$(AR) -rs ${LIB_PATH}libiobb.a ${LIB_PATH}BBBiolib.o ${LIB_PATH}BBBiolib_PWMSS.o ${LIB_PATH}BBBiolib_McSPI.o ${LIB_PATH}BBBiolib_ADCTSC.o ${LIB_PATH}i2cfunc.o
 	cp ${LIB_PATH}libiobb.a ./
 	cp ${LIB_PATH}BBBiolib.h ./iobb.h
 	cp ${LIB_PATH}BBBiolib_ADCTSC.h ./
