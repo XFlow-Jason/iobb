@@ -1,53 +1,61 @@
+# --- Standard Makefile Variables ---
+# Use CC from the environment, defaulting to the old compiler if not set.
+CC ?= arm-linux-gnueabihf-gcc
+AR ?= ar
 
+# Use CFLAGS from the environment, defaulting to -W.
+# Your Docker command will add --target and --sysroot to this.
+CFLAGS ?= -W
+ARFLAGS ?= rs
+
+# Use PREFIX from the environment for the installation path.
+PREFIX ?= /usr/local
+
+
+# --- Project Configuration ---
 LIB_PATH = ./BBBio_lib/
-DEMO_PATH = ./Demo/
-TOOLKIT_PATH = ./Toolkit/
-LAB_PATH = ./Lab/
+TARGET_LIB = libiobb.a
+TARGET_HEADER = iobb.h
+
+# List all the object files that make up the library.
+OBJECTS = $(LIB_PATH)BBBiolib.o \
+          $(LIB_PATH)BBBiolib_PWMSS.o \
+          $(LIB_PATH)BBBiolib_McSPI.o \
+          $(LIB_PATH)BBBiolib_ADCTSC.o \
+          $(LIB_PATH)i2cfunc.o
+
+# List all the public headers to be installed.
+HEADERS = $(LIB_PATH)BBBiolib.h \
+          $(LIB_PATH)BBBiolib_ADCTSC.h \
+          $(LIB_PATH)BBBiolib_McSPI.h \
+          $(LIB_PATH)BBBiolib_PWMSS.h \
+          $(LIB_PATH)i2cfunc.h
 
 
-LIBRARIES = iobb
+# --- Build Rules ---
+.PHONY: all install clean
 
-# all : libiobb.a LED ADT7301 SEVEN_SCAN SMOTOR DEBOUNCING 4x4keypad ADC ADC_VOICE GPIO_STATUS EP_STATUS ADC_CALC lcd3-test test-outputs pb-test-outputs test-inputs pb-test-inputs
+# Default target: build the library.
+all: $(TARGET_LIB)
 
-libiobb.a : ${LIB_PATH}BBBiolib.c ${LIB_PATH}BBBiolib.h BBBiolib_PWMSS.o BBBiolib_McSPI.o BBBiolib_ADCTSC.o i2cfunc.o
-	arm-linux-gnueabihf-gcc -c ${LIB_PATH}BBBiolib.c -o ${LIB_PATH}BBBiolib.o
-	ar -rs ${LIB_PATH}libiobb.a ${LIB_PATH}BBBiolib.o ${LIB_PATH}BBBiolib_PWMSS.o ${LIB_PATH}BBBiolib_McSPI.o ${LIB_PATH}BBBiolib_ADCTSC.o ${LIB_PATH}i2cfunc.o
-	cp ${LIB_PATH}libiobb.a ./
-	cp ${LIB_PATH}BBBiolib.h ./iobb.h
-	cp ${LIB_PATH}BBBiolib_ADCTSC.h ./
-	cp ${LIB_PATH}BBBiolib_McSPI.h ./
-	cp ${LIB_PATH}BBBiolib_PWMSS.h ./
-	cp ${LIB_PATH}i2cfunc.h ./
+# Rule to link the final static library from all the object files.
+$(TARGET_LIB): $(OBJECTS)
+	$(AR) $(ARFLAGS) $@ $^
 
-BBBiolib_PWMSS.o : ${LIB_PATH}BBBiolib_PWMSS.c ${LIB_PATH}BBBiolib_PWMSS.h
-	arm-linux-gnueabihf-gcc -c ${LIB_PATH}BBBiolib_PWMSS.c -o ${LIB_PATH}BBBiolib_PWMSS.o -W 
+# Generic rule to compile any .c file from the library path into an object file.
+# This single rule replaces all the repetitive, separate .o rules from the old file.
+$(LIB_PATH)%.o: $(LIB_PATH)%.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
-BBBiolib_McSPI.o : ${LIB_PATH}BBBiolib_McSPI.c ${LIB_PATH}BBBiolib_PWMSS.h
-	arm-linux-gnueabihf-gcc -c ${LIB_PATH}BBBiolib_McSPI.c -o ${LIB_PATH}BBBiolib_McSPI.o -W
+# Rule to install the library and headers to the paths specified by PREFIX.
+install: $(TARGET_LIB)
+	install -d $(PREFIX)/lib
+	install -d $(PREFIX)/include
+	install -m 644 $(TARGET_LIB) $(PREFIX)/lib/
+	install -m 644 $(HEADERS) $(PREFIX)/include/
+	# Create the main iobb.h header as a copy of BBBiolib.h
+	install -m 644 $(LIB_PATH)BBBiolib.h $(PREFIX)/include/$(TARGET_HEADER)
 
-BBBiolib_ADCTSC.o : ${LIB_PATH}BBBiolib_ADCTSC.c ${LIB_PATH}BBBiolib_ADCTSC.h
-	arm-linux-gnueabihf-gcc -c ${LIB_PATH}BBBiolib_ADCTSC.c -o ${LIB_PATH}BBBiolib_ADCTSC.o -W
-
-i2cfunc.o : ${LIB_PATH}i2cfunc.c ${LIB_PATH}i2cfunc.h
-	arm-linux-gnueabihf-gcc -c ${LIB_PATH}i2cfunc.c -o ${LIB_PATH}i2cfunc.o
-
-ifndef COMPILE_PATH
-    COMPILE_PATH := "/usr/arm-linux-gnueabihf"
-endif
-
-
-install :  
-	echo "${COMPILE_PATH}"
-	rm -f ${COMPILE_PATH}/include/BBBiolib.h
-	cp ${LIB_PATH}libiobb.a ${COMPILE_PATH}/lib/
-	cp ${LIB_PATH}BBBiolib.h ${COMPILE_PATH}/include/iobb.h
-	cp ${LIB_PATH}BBBiolib_ADCTSC.h ${COMPILE_PATH}/include
-	cp ${LIB_PATH}BBBiolib_McSPI.h ${COMPILE_PATH}/include
-	cp ${LIB_PATH}BBBiolib_PWMSS.h ${COMPILE_PATH}/include
-	cp ${LIB_PATH}i2cfunc.h ${COMPILE_PATH}/include
-	ln -s ${COMPILE_PATH}/include/iobb.h ${COMPILE_PATH}/include/BBBiolib.h
-
-	
 
 #---------------------------------------------------
 # Demo
@@ -134,7 +142,6 @@ install :
 # 	g++ -o VD ${LAB_PATH}Voice_Door/voice_door.cpp -L ${LIB_PATH} -liobb -lfftw3 -lm -pthread -O3
 
 
-.PHONY: clean
-clean :
-	rm -rf ${LIB_PATH}*.o ${LIB_PATH}libiobb.a libiobb.a iobb.h BBBiolib_ADCTSC.h BBBiolib_McSPI.h i2cfunc.h lcd3-test test-inputs pb-test-inputs test-outputs pb-test-outputs BBBiolib_PWMSS.h LED ADT7301 GPIO_CLK_status SevenScan Ultrasonic28015 TMP SMOTOR LED_GPIO Debouncing 4x4keypad EP_status PWM RA ADXL345 ADC ADC_CALC L3G4200D
-
+# Rule to clean up all generated files.
+clean:
+	rm -f $(OBJECTS) $(TARGET_LIB)
