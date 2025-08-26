@@ -1,3 +1,5 @@
+CC ?= arm-linux-gnueabihf-gcc
+CFLAGS ?=
 
 LIB_PATH = ./BBBio_lib/
 DEMO_PATH = ./Demo/
@@ -10,7 +12,7 @@ LIBRARIES = iobb
 # all : libiobb.a LED ADT7301 SEVEN_SCAN SMOTOR DEBOUNCING 4x4keypad ADC ADC_VOICE GPIO_STATUS EP_STATUS ADC_CALC lcd3-test test-outputs pb-test-outputs test-inputs pb-test-inputs
 
 libiobb.a : ${LIB_PATH}BBBiolib.c ${LIB_PATH}BBBiolib.h BBBiolib_PWMSS.o BBBiolib_McSPI.o BBBiolib_ADCTSC.o i2cfunc.o
-	arm-linux-gnueabihf-gcc -c ${LIB_PATH}BBBiolib.c -o ${LIB_PATH}BBBiolib.o
+	$(CC) $(CFLAGS) -c ${LIB_PATH}BBBiolib.c -o ${LIB_PATH}BBBiolib.o
 	ar -rs ${LIB_PATH}libiobb.a ${LIB_PATH}BBBiolib.o ${LIB_PATH}BBBiolib_PWMSS.o ${LIB_PATH}BBBiolib_McSPI.o ${LIB_PATH}BBBiolib_ADCTSC.o ${LIB_PATH}i2cfunc.o
 	cp ${LIB_PATH}libiobb.a ./
 	cp ${LIB_PATH}BBBiolib.h ./iobb.h
@@ -20,16 +22,16 @@ libiobb.a : ${LIB_PATH}BBBiolib.c ${LIB_PATH}BBBiolib.h BBBiolib_PWMSS.o BBBioli
 	cp ${LIB_PATH}i2cfunc.h ./
 
 BBBiolib_PWMSS.o : ${LIB_PATH}BBBiolib_PWMSS.c ${LIB_PATH}BBBiolib_PWMSS.h
-	arm-linux-gnueabihf-gcc -c ${LIB_PATH}BBBiolib_PWMSS.c -o ${LIB_PATH}BBBiolib_PWMSS.o -W 
+    $(CC) $(CFLAGS) -c ${LIB_PATH}BBBiolib_PWMSS.c -o ${LIB_PATH}BBBiolib_PWMSS.o -W 
 
 BBBiolib_McSPI.o : ${LIB_PATH}BBBiolib_McSPI.c ${LIB_PATH}BBBiolib_PWMSS.h
-	arm-linux-gnueabihf-gcc -c ${LIB_PATH}BBBiolib_McSPI.c -o ${LIB_PATH}BBBiolib_McSPI.o -W
+    $(CC) $(CFLAGS) -c ${LIB_PATH}BBBiolib_McSPI.c -o ${LIB_PATH}BBBiolib_McSPI.o -W
 
 BBBiolib_ADCTSC.o : ${LIB_PATH}BBBiolib_ADCTSC.c ${LIB_PATH}BBBiolib_ADCTSC.h
-	arm-linux-gnueabihf-gcc -c ${LIB_PATH}BBBiolib_ADCTSC.c -o ${LIB_PATH}BBBiolib_ADCTSC.o -W
+    $(CC) $(CFLAGS) -c ${LIB_PATH}BBBiolib_ADCTSC.c -o ${LIB_PATH}BBBiolib_ADCTSC.o -W
 
 i2cfunc.o : ${LIB_PATH}i2cfunc.c ${LIB_PATH}i2cfunc.h
-	arm-linux-gnueabihf-gcc -c ${LIB_PATH}i2cfunc.c -o ${LIB_PATH}i2cfunc.o
+    $(CC) $(CFLAGS) -c ${LIB_PATH}i2cfunc.c -o ${LIB_PATH}i2cfunc.o
 
 ifndef COMPILE_PATH
     COMPILE_PATH := "/usr/arm-linux-gnueabihf"
@@ -134,7 +136,6 @@ install :
 # 	g++ -o VD ${LAB_PATH}Voice_Door/voice_door.cpp -L ${LIB_PATH} -liobb -lfftw3 -lm -pthread -O3
 
 
-.PHONY: clean
-clean :
-	rm -rf ${LIB_PATH}*.o ${LIB_PATH}libiobb.a libiobb.a iobb.h BBBiolib_ADCTSC.h BBBiolib_McSPI.h i2cfunc.h lcd3-test test-inputs pb-test-inputs test-outputs pb-test-outputs BBBiolib_PWMSS.h LED ADT7301 GPIO_CLK_status SevenScan Ultrasonic28015 TMP SMOTOR LED_GPIO Debouncing 4x4keypad EP_status PWM RA ADXL345 ADC ADC_CALC L3G4200D
-
+# Rule to clean up all generated files.
+clean:
+	rm -f $(OBJECTS) $(TARGET_LIB)
